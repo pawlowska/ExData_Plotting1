@@ -1,0 +1,11 @@
+hpc <- read.csv2("household_power_consumption.txt")
+hpc12 <- hpc[66637:69516,]
+rm(hpc)
+hpc12[,1:2] <- lapply(hpc12[,1:2], function(x) as.character(x))
+Sys.setlocale("LC_ALL","English")
+hpc12$DateTime <- paste(hpc12$Date, hpc12$Time)
+hpc12$Temp<-strptime(hpc12$DateTime, "%Y-%m-%d %H:%M:%S")
+hpc12[,3:9] <- lapply(hpc12[,3:9], function(x) as.numeric(as.character(x)))
+png(filename = "plot2.png")
+plot(y=hpc12$Global_active_power, x=hpc12$Temp, type = "l", ylab = "Global Active Power (kilowatts)", xlab = "")
+dev.off()
